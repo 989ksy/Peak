@@ -17,8 +17,6 @@ class FavoriteViewController : BaseViewController {
     
     var tasks : Results<Shopping>! //realm 테이블 데이터 (저장됨)
     var codableData : Item? //코더블 객체
-    var searchList : Search = Search(total: 0, start: 0, display: 0, items: [])
-//
     
     override func loadView() {
         let view = mainView
@@ -164,9 +162,13 @@ extension FavoriteViewController : UICollectionViewDataSource, UICollectionViewD
         cell.productNameLabel.text = fixedTitle
     //가게명
         cell.storeNameLabel.text = data.storeName
-    //가격
-        cell.priceLabel.text = data.price
-    
+    //가격 (string -> Int, 소수점 표현)
+        let value = Int(data.price)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(for: value) ?? data.price
+        cell.priceLabel.text = result
+            
     //좋아요 버튼 이미지 설정
         cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         cell.likeButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)

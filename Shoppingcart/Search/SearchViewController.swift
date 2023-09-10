@@ -340,14 +340,23 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
         let data = searchList.items[indexPath.row]        
         
     //셀 설정
+        //제품사진
         if let imageURL = URL(string: data.image!) {
             cell.productImage.kf.setImage(with: imageURL)
         }
-        
+        //제품명
         let removeHTMLText = data.title.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil) //검색어 특수문자 제거
         cell.productNameLabel.text = removeHTMLText
+        //가게명
         cell.storeNameLabel.text = data.mallName
-        cell.priceLabel.text = data.lprice
+        //가격 (string -> Int, 소수점 표현)
+        let value = Int(data.lprice)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let result = numberFormatter.string(from: value! as NSNumber) ?? data.lprice
+        cell.priceLabel.text = result
+//        cell.priceLabel.text = data.lprice
+        //좋아요버튼
         cell.likeButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         cell.likeButton.tag = indexPath.row
         
@@ -362,7 +371,6 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
         } else {
             cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         }
-        
         
         return cell
 
