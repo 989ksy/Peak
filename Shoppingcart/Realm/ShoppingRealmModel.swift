@@ -14,12 +14,13 @@ class Shopping: Object {
     @Persisted var productImage: String?
     @Persisted var productName: String
     @Persisted var storeName: String
-    @Persisted var price: Int
+    @Persisted var price: String
     @Persisted var webLink: String
     @Persisted var favorite: Bool
-    @Persisted var date = Date()
+    @Persisted var date: Date
+    @Persisted var productId: String
     
-    convenience init(productImage: String?, productName: String, storeName: String, price: Int, webLink: String, favorite: Bool, date: Date) {
+    convenience init(productImage: String?, productName: String, storeName: String, price: String, webLink: String, favorite: Bool, date: Date, productId: String) {
         self.init()
         
         self.productImage = productImage
@@ -28,6 +29,8 @@ class Shopping: Object {
         self.price = price
         self.webLink = webLink
         self.favorite = favorite
+        self.date = date
+        self.productId = productId
         
     }
     

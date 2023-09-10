@@ -4,16 +4,33 @@
 //
 //  Created by Seungyeon Kim on 2023/09/07.
 
+//<상품 검색> 뷰 : 컬렉션뷰, 검색바, 정렬버튼
 // 쇼핑검색 컬렉션뷰 색상 바꾸는 것 잊지 말자.
 
 import UIKit
 import SnapKit
+import RealmSwift
+
 
 class SearchView: BaseView {
-    
-//    weak var delegate: SearchViewProtocol?
-    
+            
     var buttonTapped = false
+    let repository = ShoppingRepository()
+    
+    var dataSource: Results<Shopping>?
+    
+    //정렬
+    var query = "캠핑"
+    var display = 30
+    var start = 1
+    var sort = "sim" //기본값
+    
+    //컬렉션뷰
+    var searchList : Search = Search(total: 0, start: 0, display: 0, items: [])
+    var requestReloadDataHandler: (() -> Void)?
+    
+    
+
     
     // 컬렉션뷰 세팅
     lazy var collectionView = {
@@ -34,7 +51,7 @@ class SearchView: BaseView {
     }
     
     
-    //뷰 객체
+    //검색바
     
     let searchbar = {
         let view = UISearchBar()
@@ -48,6 +65,7 @@ class SearchView: BaseView {
         return view
     }()
     
+    //버튼 1~4
     let accuracyButton = { //정확도
         let view = UIButton()
         view.setTitle("정확도", for: .normal)
@@ -104,6 +122,7 @@ class SearchView: BaseView {
         addSubview(collectionView)
         collectionView.backgroundColor = .black
         
+        //버튼 액션
         accuracyButton.addTarget(self, action: #selector(accuracyButtonTapped), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(dateButtonTapped), for: .touchUpInside)
         highPriceButton.addTarget(self, action: #selector(highPriceButtonTapped), for: .touchUpInside)
@@ -112,9 +131,12 @@ class SearchView: BaseView {
     }
     
     
-    
+    //정확도로 보기
     @objc func accuracyButtonTapped() {
         buttonTapped.toggle()
+        
+        let queryText = self.searchbar.text ?? ""
+        let querySort = buttonTapped ? "sim" : "sim"
         
         if buttonTapped {
             accuracyButton.backgroundColor = .white
@@ -123,13 +145,30 @@ class SearchView: BaseView {
             accuracyButton.backgroundColor = .black
             accuracyButton.setTitleColor(UIColor.white, for: .normal)
         }
-        print("정확 버튼")
+        
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+//            self.searchList.items.append(contentsOf: data.items)
+            self.collectionView.reloadData()
+            print("==== 정확성 API")
+        } failure: {
+            print("정확성 오류")
+        }
+        
+        print(buttonTapped ? "정확성 눌림" : "정확성 해제")
+        
         
         
     }
     
+    //날짜순으로보기
     @objc func dateButtonTapped() {
+        
         buttonTapped.toggle()
+        
+        let queryText = self.searchbar.text ?? ""
+        let querySort = buttonTapped ? "date" : "sim"
         
         if buttonTapped {
             dateButton.backgroundColor = .white
@@ -138,13 +177,30 @@ class SearchView: BaseView {
             dateButton.backgroundColor = .black
             dateButton.setTitleColor(UIColor.white, for: .normal)
         }
-        print("날짜 버튼")
+        
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+            self.requestReloadDataHandler?()
+//            self.searchList.items.append(contentsOf: data.items)
+//            self.collectionView.reloadData()
+            print("==== 날짜순 API")
+        } failure: {
+            print("날짜순 오류")
+        }
+        
+        print(buttonTapped ? "날짜순 눌림" : "날짜순 해제")
         
     }
     
+    //가격높은순으로 보기
     @objc func highPriceButtonTapped() {
+        
         buttonTapped.toggle()
         
+        let queryText = self.searchbar.text ?? ""
+        let querySort = buttonTapped ? "dsc" : "sim"
+            
         if buttonTapped {
             highPriceButton.backgroundColor = .white
             highPriceButton.setTitleColor(UIColor.black, for: .normal)
@@ -152,13 +208,31 @@ class SearchView: BaseView {
             highPriceButton.backgroundColor = .black
             highPriceButton.setTitleColor(UIColor.white, for: .normal)
         }
-        print("비쌈 버튼")
+            
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+//            self.searchList.items.append(contentsOf: data.items)
+            self.collectionView.reloadData()
+            print("==== 가격높은 순 API")
+        } failure: {
+            print("가격 높은 순 오류")
+        }
+            
+        print(buttonTapped ? "비쌈 버튼 눌림" : "비쌈 버튼 해제")
+        
+
         
     }
     
+    //가격낮은순으로 보기
     @objc func lowPriceButtonTapped() {
         buttonTapped.toggle()
         
+        
+        let queryText = self.searchbar.text ?? ""
+        let querySort = buttonTapped ? "asc" : "sim"
+            
         if buttonTapped {
             lowPriceButton.backgroundColor = .white
             lowPriceButton.setTitleColor(UIColor.black, for: .normal)
@@ -166,8 +240,20 @@ class SearchView: BaseView {
             lowPriceButton.backgroundColor = .black
             lowPriceButton.setTitleColor(UIColor.white, for: .normal)
         }
-        print("쌈 버튼")
+            
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+//            self.searchList.items.append(contentsOf: data.items)
+            self.collectionView.reloadData()
+            print("==== 가격높은 순 API")
+        } failure: {
+            print("가격 높은 순 오류")
+        }
+            
+        print(buttonTapped ? "비쌈 버튼 눌림" : "비쌈 버튼 해제")
         
+
     }
     
     
@@ -215,19 +301,3 @@ class SearchView: BaseView {
     
     
 }
-
-
-//extension SearchView : UICollectionViewDelegate, UICollectionViewDataSource {
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 10
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchCollectionViewCell", for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
-//
-//        return cell
-//
-//    }
-//
-//}

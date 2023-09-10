@@ -12,11 +12,11 @@ class SearchAPIManager {
     
     static let shared = SearchAPIManager()
     
-    func callRequest(query: String, page:Int, display: Int, success: @escaping (Search) -> (), failure: @escaping () -> () ){
+    func callRequest(query: String, sort: String, page:Int, display: Int, success: @escaping (Search) -> (), failure: @escaping () -> () ){
         
         guard let text = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
         print("===SearchAPIManager query(text)")
-        guard let url = URL(string: "https://openapi.naver.com/v1/search/shop.json?query=\(text)&display=\(display)&start=\(page)") else { return }
+        guard let url = URL(string: "https://openapi.naver.com/v1/search/shop.json?query=\(text)&display=\(display)&start=\(page)&sort=\(sort)") else { return }
         print("===SearchAPIManager url", url)
         let header: HTTPHeaders = ["X-Naver-Client-Id":"\(APIKey.naverID)", "X-Naver-Client-Secret":"0IJXcAfwGn"]
         
