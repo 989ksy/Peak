@@ -277,6 +277,7 @@ class SearchViewController: BaseViewController {
             print("====버튼눌림6-2, 3==, 빈하트 설정값:\(favoriteState)")
         }
         
+        print("============== 서치뷰 좋아요 버튼 액션 끝!")
         
     }
     

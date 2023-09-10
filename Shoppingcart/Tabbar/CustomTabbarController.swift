@@ -17,7 +17,6 @@ class CustomTabBarController: UITabBarController {
         self.tabBar.unselectedItemTintColor = .darkGray //안눌림 아이콘 컬러
         self.tabBar.isTranslucent = false //불투명 X
         self.tabBar.backgroundColor = .black //백그라운드 : 검정색
-//        self.tabBar.scrollEdgeAppearance =
         
     //아이콘 설정
         let firstVC = UINavigationController(rootViewController: SearchViewController())

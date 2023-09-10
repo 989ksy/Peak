@@ -4,7 +4,6 @@
 //
 //  Created by Seungyeon Kim on 2023/09/08.
 //  <좋아요 목록> 뷰컨트롤러
-// let tasks = localRealm.objects(UserDiary.self).sorted(byKeyPath: "date", ascending: false) 최근등록순~
 
 import UIKit
 import RealmSwift
@@ -17,9 +16,9 @@ class FavoriteViewController : BaseViewController {
     let realm = try! Realm()
     
     var tasks : Results<Shopping>! //realm 테이블 데이터 (저장됨)
-    var data : Item? //코더블 객체
-    
-    var completionHandler : (() -> Void)?
+    var codableData : Item? //코더블 객체
+//    var searchList : Search = Search(total: 0, start: 0, display: 0, items: [])
+//
     
     override func loadView() {
         let view = mainView
@@ -179,8 +178,11 @@ extension FavoriteViewController : UICollectionViewDataSource, UICollectionViewD
         
         let vc = FavProductViewController()
         let shoppingData = tasks[indexPath.row]
+//        let codableData = codableData[indexPath.row]
         
         vc.shoppingData = shoppingData
+//        vc.bowlData = codableData
+        
         
         navigationController?.pushViewController(vc, animated: true)
         

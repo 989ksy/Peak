@@ -23,14 +23,16 @@ class ShoppingRepository: ShoppingRepositoryType {
         print(realm.configuration.fileURL)
     }
     
+    
     //저장데이터 확인 (좋아요 버튼 데이터 확인용)
-    func IsSavedData (productID: Int) -> Bool {
+    func IsSavedData (productID: String) -> Bool {
         guard let data = data else { return false }
         let result = realm.objects(Shopping.self).where {
             $0.productId == data.productID
         }
         return true
     }
+    
     
     //검색하기 (FavVC, 제품명만 가져온다.)
     func fetchProductNameFilter(productName: String) -> Results<Shopping> {
@@ -54,21 +56,13 @@ class ShoppingRepository: ShoppingRepositoryType {
         }
     }
     
+    
     //가져오기 (FavVC, 최신순 정렬)
     func fetch() -> Results<Shopping> {
         let data = realm.objects(Shopping.self).sorted(byKeyPath: "date", ascending: false )
         return data
     }
     
-    
-    //필터
-    func fetchFavoriteFilter() -> Results<Shopping> {
-        //좋아요인 것만 보여줘
-        let result = realm.objects(Shopping.self).where {
-            $0.favorite == true
-        }
-        return result
-    }
     
     
     //저장 (Realm에 저장)
@@ -83,21 +77,6 @@ class ShoppingRepository: ShoppingRepositoryType {
         }
         
     }
-    
-    //업데이트
-    
-    func updateItem(productId: String, like: Bool) {
-        do {
-            try realm.write{
-                print("likeButton", like)
-                realm.create(Shopping.self, value: ["productId": productId, "favorite": like], update: .modified)
-                print("좋아요 저장 업데이트!")
-            }
-        } catch {
-            print("좋아요 저장 실패: \(error)")
-        }
-    }
-    
     
     
 }
