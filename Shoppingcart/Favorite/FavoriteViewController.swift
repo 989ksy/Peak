@@ -16,7 +16,10 @@ class FavoriteViewController : BaseViewController {
     let repository = ShoppingRepository()
     let realm = try! Realm()
     
-    var tasks : Results<Shopping>!
+    var tasks : Results<Shopping>! //realm 테이블 데이터 (저장됨)
+    var data : Item? //코더블 객체
+    
+    var completionHandler : (() -> Void)?
     
     override func loadView() {
         let view = mainView
@@ -57,7 +60,48 @@ class FavoriteViewController : BaseViewController {
         repository.fetch()
         mainView.collectionView.reloadData()
     }
-}
+    
+
+//즐겨찾기 목록 좋아요 버튼
+    @objc func favoriteButtonTapped(_ sender: UIButton) {
+        print("=== 좋아요 목록 셀 버튼 눌림1: \(#function)")
+        
+        let indexPath = sender.tag //셀
+        guard let cell = mainView.collectionView.cellForItem(at: IndexPath(item: indexPath, section: 0)) as? SearchCollectionViewCell else {return}
+        print("=== 버튼 눌림2, 인덱스:\(indexPath)")
+    
+        var data = tasks[indexPath]
+        
+        //데이터 저장되었는지 확인하기 (productID 기준)
+        let realm = try! Realm()
+        let isSavedData = realm.objects(Shopping.self).where {
+            $0.productId == data.productId
+        }
+        
+        print("여기까지 나옴?")
+        
+        if isSavedData.isEmpty == true {
+            print("=== 데이터 저장은 이미 되어 있는 거니까, 이거 나오면 좀 이상할듯")
+        } else {
+            //데이터가 있을 시 데이터 삭제 (realm delete)
+            
+            let deletingData = realm.objects(Shopping.self).where {
+                $0.productId == data.productId }.first
+            do {
+                try realm.write {
+                    realm.delete(deletingData!)
+                    print("=== 좋아요 목록 데이터 삭제 성공")
+                }
+            } catch {
+                print("=== 데이터 삭제 X")
+            }
+        }
+        
+        mainView.collectionView.reloadData()
+
+    }
+    
+}//
 
 
 extension FavoriteViewController: UISearchBarDelegate {
@@ -85,7 +129,7 @@ extension FavoriteViewController: UISearchBarDelegate {
     }
 
     
-//취소버튼 클릭시 (등록된 모든 아이템 보여줌)
+//취소버튼 클릭시 (등록된 모든 아이템 보여줌) ** 수정요망
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         repository.fetch()
@@ -124,6 +168,8 @@ extension FavoriteViewController : UICollectionViewDataSource, UICollectionViewD
     
     //좋아요 버튼 이미지 설정
         cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        cell.likeButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        cell.likeButton.tag = indexPath.row
         
         return cell
         

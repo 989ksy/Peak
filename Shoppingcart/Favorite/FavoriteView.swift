@@ -61,7 +61,6 @@ class FavoriteView : BaseView {
             make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
         
-        
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(searchbar.snp.bottom).offset(10)
             make.bottom.equalTo(self.safeAreaLayoutGuide)

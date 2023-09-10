@@ -12,9 +12,7 @@ import RealmSwift
 
 
 class SearchCollectionViewCell: BaseCollectionViewCell {
-    
-    let repository = ShoppingRepository()
-    
+        
     let productImage = {
         let view = UIImageView()
         view.layer.cornerRadius = 20
@@ -61,12 +59,18 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         addSubview(storeNameLabel)
         addSubview(productNameLabel)
         addSubview(priceLabel)
-        
-        repository.getFileURL()
-
 
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        self.priceLabel.text = nil
+        self.storeNameLabel.text = nil
+        self.productNameLabel.text = nil
+        
+    }
 
     
     override func setConstraints() {

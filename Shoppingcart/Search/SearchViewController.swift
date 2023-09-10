@@ -84,11 +84,8 @@ class SearchViewController: BaseViewController {
     
     //정확도로 보기
     @objc func accuracyButtonTapped() {
+
         buttonTapped.toggle()
-        
-        let queryText = mainView.searchbar.text ?? ""
-        let querySort = buttonTapped ? "sim" : "sim"
-        
         if buttonTapped {
             mainView.accuracyButton.backgroundColor = .white
             mainView.accuracyButton.setTitleColor(UIColor.black, for: .normal)
@@ -96,6 +93,18 @@ class SearchViewController: BaseViewController {
             mainView.accuracyButton.backgroundColor = .black
             mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
         }
+        
+//        mainView.accuracyButton.isSelected = true
+//        mainView.dateButton.isSelected = false
+//        mainView.highPriceButton.isSelected = false
+//        mainView.lowPriceButton.isSelected = false
+//
+//        mainView.accuracyButton.backgroundColor = .white
+//        mainView.accuracyButton.setTitleColor(UIColor.black, for: .normal)
+//
+        
+        let queryText = mainView.searchbar.text ?? ""
+        let querySort = buttonTapped ? "sim" : "sim"
         
         // API 호출
         SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
@@ -114,10 +123,6 @@ class SearchViewController: BaseViewController {
     @objc func dateButtonTapped() {
         
         buttonTapped.toggle()
-        
-        let queryText = mainView.searchbar.text ?? ""
-        let querySort = buttonTapped ? "date" : "sim"
-        
         if buttonTapped {
             mainView.dateButton.backgroundColor = .white
             mainView.dateButton.setTitleColor(UIColor.black, for: .normal)
@@ -125,6 +130,17 @@ class SearchViewController: BaseViewController {
             mainView.dateButton.backgroundColor = .black
             mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
         }
+        
+        let queryText = mainView.searchbar.text ?? ""
+        let querySort = buttonTapped ? "date" : "sim"
+        
+//        mainView.dateButton.isSelected = true
+//        mainView.accuracyButton.isSelected = false
+//        mainView.highPriceButton.isSelected = false
+//        mainView.lowPriceButton.isSelected = false
+//
+//        mainView.dateButton.backgroundColor = .white
+//        mainView.dateButton.setTitleColor(UIColor.black, for: .normal)
         
         // API 호출
         SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
@@ -143,7 +159,7 @@ class SearchViewController: BaseViewController {
     @objc func highPriceButtonTapped() {
         
         buttonTapped.toggle()
-        self.searchList.items.removeAll()
+//        self.searchList.items.removeAll()
         
         let queryText = mainView.searchbar.text ?? ""
         let querySort = buttonTapped ? "dsc" : "sim"
@@ -225,7 +241,7 @@ class SearchViewController: BaseViewController {
         
         if isSavedData.isEmpty == true {
             // 좋아요 버튼 클릭 시 데이터 저장 (realm create)
-            let task = Shopping(productImage: data.image, productName: data.title, storeName: data.mallName, price: data.lprice, webLink: data.link, favorite: data.like, date: Date(), productId: data.productID)
+            let task = Shopping(productImage: data.image, productName: data.title, storeName: data.mallName, price: data.lprice, webLink: data.link, favorite: true, date: Date(), productId: data.productID)
                 repository.createItem(task)
             print("=== 버튼 눌림4-1, 데이터 저장 성공")
     
@@ -261,26 +277,19 @@ class SearchViewController: BaseViewController {
             print("====버튼눌림6-2, 3==, 빈하트 설정값:\(favoriteState)")
         }
         
-        guard let shoppingData = shoppingData else {return}
-        favoriteState = shoppingData.favorite
-        
-        print("=== 7 ===liked 결과, 테이블에 들어가야하는 값: \(favoriteState)")
-        print("=== 8 ===liked 결과, 버튼 함수 끝!")
         
     }
     
     
     
-}
+}//
 
 
 //서치바 (검색기능 구현)
-
 extension SearchViewController: UISearchBarDelegate {
     
 //네트워크 통신 세팅
     func searchQuery (query: String) {
-//        searchQuery = query
         searchList.items.removeAll()
 
         SearchAPIManager.shared.callRequest(query: query, sort: sort, page: page, display: 30) { data in
@@ -329,7 +338,6 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
     //indexPath.row 설정
         let data = searchList.items[indexPath.row]        
         
-        
     //셀 설정
         if let imageURL = URL(string: data.image!) {
             cell.productImage.kf.setImage(with: imageURL)
@@ -341,7 +349,20 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
         cell.priceLabel.text = data.lprice
         cell.likeButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         cell.likeButton.tag = indexPath.row
-
+        
+        //productID를 이용해서 하트 저장하기
+        let realm = try! Realm()
+        let isSavedData = realm.objects(Shopping.self).where {
+            $0.productId == data.productID
+        }
+        
+        if isSavedData.isEmpty == true {
+            cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        } else {
+            cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        }
+        
+        
         return cell
 
     }
