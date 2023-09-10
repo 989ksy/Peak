@@ -75,7 +75,7 @@ extension FavoriteViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
         searchQuery(query: query)
-//        searchBar.resignFirstResponder()
+        searchBar.resignFirstResponder()
     }
 
 //실시간 검색기능
@@ -93,10 +93,6 @@ extension FavoriteViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 
-//화면 터치 시 키보드 내려감 (구현확인해야함)***
-    func tapTouched(_ sender: UITapGestureRecognizer) {
-        mainView.endEditing(true)
-    }
     
 }
 
@@ -125,6 +121,9 @@ extension FavoriteViewController : UICollectionViewDataSource, UICollectionViewD
         cell.storeNameLabel.text = data.storeName
     //가격
         cell.priceLabel.text = data.price
+    
+    //좋아요 버튼 이미지 설정
+        cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         
         return cell
         

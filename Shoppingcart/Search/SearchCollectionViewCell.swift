@@ -3,6 +3,7 @@
 //  Shoppingcart
 //
 //  Created by Seungyeon Kim on 2023/09/07.
+//
 //  <상품 검색> 컬렉션뷰셀 : 상품이미지, 가게명, 상품이름, 좋아요 버튼
 
 import UIKit
@@ -12,8 +13,6 @@ import RealmSwift
 
 class SearchCollectionViewCell: BaseCollectionViewCell {
     
-    var data : Item?
-    var shoppingData : Shopping?
     let repository = ShoppingRepository()
     
     let productImage = {
@@ -64,46 +63,11 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
         addSubview(priceLabel)
         
         repository.getFileURL()
-//        repository.fetch()
 
-        likeButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
 
     }
     
-    
-    @objc func favoriteButtonTapped() {
-        
-        //버튼을 누를 때마다 데이터가 저장중............
-        guard let data = data else {return}
-        
 
-        
-    // 좋아요 버튼 클릭 시 데이터 저장 (realm create)
-        let task = Shopping(productImage: data.image, productName: data.title, storeName: data.mallName, price: data.lprice, webLink: data.link, favorite: data.like, date: Date(), productId: data.productID)
-        
-        repository.createItem(task)
-        
-    //좋아요 버튼 상태
-        var favoriteState = data.like //기본설정: Bool, false
-        print("====1==초기설정값:\(favoriteState)")
-        
-        favoriteState.toggle()
-
-        if favoriteState == true {
-            likeButton.setImage(UIImage(systemName: "heart.fill" ), for: .normal)
-            print("====현재상태:\(favoriteState), 좋아요 오케이!")
-        } else {
-            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            print("====현재상태:\(favoriteState) 좋아요 해제!")
-        }
-        
-
-
-        
-
-        
-    }
-    
     
     override func setConstraints() {
         

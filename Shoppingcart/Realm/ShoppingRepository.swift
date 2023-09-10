@@ -29,7 +29,6 @@ class ShoppingRepository: ShoppingRepositoryType {
         let result = realm.objects(Shopping.self).where {
             $0.productId == data.productID
         }
-        
         return true
     }
     
@@ -37,7 +36,7 @@ class ShoppingRepository: ShoppingRepositoryType {
     func fetchProductNameFilter(productName: String) -> Results<Shopping> {
         
         let result = realm.objects(Shopping.self).where {
-            $0.productName == productName
+            $0.productName.contains(productName)
         }
         return result
     }
@@ -87,11 +86,11 @@ class ShoppingRepository: ShoppingRepositoryType {
     
     //업데이트
     
-    func updateItem(id: ObjectId, like: Bool) {
+    func updateItem(productId: String, like: Bool) {
         do {
             try realm.write{
                 print("likeButton", like)
-                realm.create(Shopping.self, value: ["_id": id, "favorite": like], update: .modified)
+                realm.create(Shopping.self, value: ["productId": productId, "favorite": like], update: .modified)
                 print("좋아요 저장 업데이트!")
             }
         } catch {

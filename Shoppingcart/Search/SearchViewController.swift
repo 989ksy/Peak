@@ -19,6 +19,9 @@ class SearchViewController: BaseViewController {
     var tasks: Results<Shopping>!
     let repository = ShoppingRepository()
     
+    var data : Item? //코더블 객체(API)
+    var shoppingData : Shopping? //렘모델
+    
     
 //페이지네이션 + 검색 + 정렬
     var page = 1 //start, 페이지네이션
@@ -72,6 +75,7 @@ class SearchViewController: BaseViewController {
         mainView.highPriceButton.addTarget(self, action: #selector(highPriceButtonTapped), for: .touchUpInside)
         mainView.lowPriceButton.addTarget(self, action: #selector(lowPriceButtonTapped), for: .touchUpInside)
         
+        //
         
     }
     
@@ -171,7 +175,6 @@ class SearchViewController: BaseViewController {
     @objc func lowPriceButtonTapped() {
         buttonTapped.toggle()
         
-        
         let queryText = mainView.searchbar.text ?? ""
         let querySort = buttonTapped ? "asc" : "sim"
         
@@ -198,6 +201,74 @@ class SearchViewController: BaseViewController {
     
     
     override func setConstraints() {}
+    
+//좋아요 버튼 구현 (저장, 삭제, 토글)
+    
+    @objc func favoriteButtonTapped(_ sender: UIButton) {
+        print("=== 버튼 눌림1: \(#function)")
+        
+        let indexPath = sender.tag
+        
+        guard let cell = mainView.collectionView.cellForItem(at: IndexPath(item: indexPath, section: 0)) as? SearchCollectionViewCell else {return}
+        print("=== 버튼 눌림2, 인덱스:\(indexPath)")
+                
+        var data = searchList.items[indexPath] //코더블 식판
+        print("=== 버튼 눌림3, 데이터 불러와봄: \(data)")
+        
+        //데이터가 저장 되어있는지 확인 (제품ID 기준)
+        let realm = try! Realm()
+        let isSavedData = realm.objects(Shopping.self).where {
+            $0.productId == data.productID
+        }
+        
+        print("=== 버튼 눌림4, 데이터 저장 되었는지 확인 중")
+        
+        if isSavedData.isEmpty == true {
+            // 좋아요 버튼 클릭 시 데이터 저장 (realm create)
+            let task = Shopping(productImage: data.image, productName: data.title, storeName: data.mallName, price: data.lprice, webLink: data.link, favorite: data.like, date: Date(), productId: data.productID)
+                repository.createItem(task)
+            print("=== 버튼 눌림4-1, 데이터 저장 성공")
+    
+        } else {
+            // 데이터가 있을 시 데이터 삭제 (realm delete)
+            
+            let deletingData = realm.objects(Shopping.self).where {
+                $0.productId == data.productID }.first
+            
+            do {
+                try realm.write {
+                    realm.delete(deletingData!)
+                print("=== 버튼 눌림4-2, 데이터 삭제 성공")
+                }
+            } catch {
+                print ("=== 버튼 눌림4-2, 데이터 삭제 안되었음")
+            }
+            
+        }
+        
+    //좋아요 버튼 상태
+        
+        searchList.items[sender.tag].like.toggle()
+        
+        var favoriteState = searchList.items[sender.tag].like
+        print("====버튼눌림5, 1==초기설정값:\(favoriteState)")
+        
+        if favoriteState {
+            cell.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            print("====버튼눌림6-1, 2==, 필하트 설정값:\(favoriteState)")
+        } else {
+            cell.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            print("====버튼눌림6-2, 3==, 빈하트 설정값:\(favoriteState)")
+        }
+        
+        guard let shoppingData = shoppingData else {return}
+        favoriteState = shoppingData.favorite
+        
+        print("=== 7 ===liked 결과, 테이블에 들어가야하는 값: \(favoriteState)")
+        print("=== 8 ===liked 결과, 버튼 함수 끝!")
+        
+    }
+    
     
     
 }
@@ -256,8 +327,8 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchCollectionViewCell", for: indexPath) as? SearchCollectionViewCell else { return UICollectionViewCell() }
 
     //indexPath.row 설정
-        let data = searchList.items[indexPath.row]
-        cell.data = data
+        let data = searchList.items[indexPath.row]        
+        
         
     //셀 설정
         if let imageURL = URL(string: data.image!) {
@@ -268,6 +339,8 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
         cell.productNameLabel.text = removeHTMLText
         cell.storeNameLabel.text = data.mallName
         cell.priceLabel.text = data.lprice
+        cell.likeButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        cell.likeButton.tag = indexPath.row
 
         return cell
 

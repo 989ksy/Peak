@@ -47,15 +47,15 @@ class ProductViewController: BaseViewController, WKUIDelegate {
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
         
-    //네비게이션바 세팅
-//        if (@available (ios 15, *)) {
-//            let appearance = UINavigationBarAppearance()
-//            appearance.backgroundColor = .black
-//            navigationController?.navigationBar.isTranslucent = false
-//            navigationController?.navigationBar.scrollEdgeAppearance = appearance
-//            navigationController?.navigationBar.standardAppearance = appearance
-//            navigationController?.navigationBar.tintColor = .white
-//        }
+    //네비게이션바 세팅 (을 하면 왜 네비게이션 제목 안보임?)
+
+            let appearance = UINavigationBarAppearance()
+            appearance.backgroundColor = .black
+            navigationController?.navigationBar.isTranslucent = false
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.tintColor = .white
+
             
         
     //네비게이션바 좋아요 버튼

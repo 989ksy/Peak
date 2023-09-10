@@ -13,9 +13,7 @@ import RealmSwift
 
 
 class SearchView: BaseView {
-            
-    let repository = ShoppingRepository()
-    
+                
     //컬렉션뷰
     var searchList : Search = Search(total: 0, start: 0, display: 0, items: [])
     
