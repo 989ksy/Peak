@@ -48,17 +48,18 @@ class ProductViewController: BaseViewController, WKUIDelegate {
         webView.load(myRequest)
         
     //네비게이션바 세팅
-//        let appearance = UINavigationBarAppearance()
-//        appearance.backgroundColor = .black
-//        navigationController?.navigationBar.isTranslucent = false
-//        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-//        navigationController?.navigationBar.standardAppearance = appearance
-//        navigationController?.navigationBar.tintColor = .white
+//        if (@available (ios 15, *)) {
+//            let appearance = UINavigationBarAppearance()
+//            appearance.backgroundColor = .black
+//            navigationController?.navigationBar.isTranslucent = false
+//            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+//            navigationController?.navigationBar.standardAppearance = appearance
+//            navigationController?.navigationBar.tintColor = .white
+//        }
+            
         
     //네비게이션바 좋아요 버튼
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(favorietButtonTapped))
-        
-        
     }
     
     @objc func favorietButtonTapped () {

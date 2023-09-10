@@ -73,9 +73,10 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
     
     @objc func favoriteButtonTapped() {
         
-        //버튼을 누를 때마다 데이터가 저장중...................
-        
+        //버튼을 누를 때마다 데이터가 저장중............
         guard let data = data else {return}
+        
+
         
     // 좋아요 버튼 클릭 시 데이터 저장 (realm create)
         let task = Shopping(productImage: data.image, productName: data.title, storeName: data.mallName, price: data.lprice, webLink: data.link, favorite: data.like, date: Date(), productId: data.productID)
@@ -96,30 +97,9 @@ class SearchCollectionViewCell: BaseCollectionViewCell {
             print("====현재상태:\(favoriteState) 좋아요 해제!")
         }
         
-//        repository.updateItem(id: , like: <#T##Bool#>)
+
 
         
-//        var favoriteState = data.favorite
-        
-//        if data.favorite == true {
-//            favoriteState = false
-//        } else {
-//            favoriteState = true
-//        }
-//        print(favoriteState)
-//
-//        if favoriteState == true {
-//            likeButton.setImage(UIImage(systemName: "heart.fill" ), for: .normal)
-//            print(favoriteState, "좋아요 오케이~")
-//        } else {
-//            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-//            print(favoriteState, "좋아요 해제!")
-//        }
-        
-//        print(data)
-        
-//        repository.updateItem(id: data._id, like: data.favorite)
-//        print(data.favorite, favoriteState)
 
         
     }

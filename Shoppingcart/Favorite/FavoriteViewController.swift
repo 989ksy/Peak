@@ -28,7 +28,6 @@ class FavoriteViewController : BaseViewController {
             tasks = repository.fetch()
     }
     
-    
     override func configureView() {
         super.configureView()
         
@@ -53,34 +52,33 @@ class FavoriteViewController : BaseViewController {
     
     override func setConstraints() {}
     
+//추가하자마자 목록에 보여줌
     func update() {
         repository.fetch()
         mainView.collectionView.reloadData()
     }
-    
-    
 }
+
 
 extension FavoriteViewController: UISearchBarDelegate {
     
     func searchQuery (query: String) {
-
+        if query.isEmpty == true {
+            tasks = repository.fetch()
+        } else {
+            tasks = repository.fetchProductNameFilter(productName: query)
+        }
         mainView.collectionView.reloadData()
     }
 
 //검색버튼 클릭시 검색 진행 (검색 query는 제품명만 가능)
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
         guard let query = searchBar.text else { return }
-        
-        let result = realm.objects(Shopping.self).where {
-            $0.productName.contains(query, options: .caseInsensitive)
-        }
-//        searchQuery(query: query)
-        mainView.collectionView.reloadData()
-
+        searchQuery(query: query)
+//        searchBar.resignFirstResponder()
     }
-    
+
+//실시간 검색기능
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let text = mainView.searchbar.text else {return}
         searchQuery(query: text)
@@ -90,15 +88,19 @@ extension FavoriteViewController: UISearchBarDelegate {
 //취소버튼 클릭시 (등록된 모든 아이템 보여줌)
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        
+        repository.fetch()
         mainView.collectionView.reloadData()
+        searchBar.resignFirstResponder()
     }
-    
+
+//화면 터치 시 키보드 내려감 (구현확인해야함)***
     func tapTouched(_ sender: UITapGestureRecognizer) {
         mainView.endEditing(true)
     }
     
 }
+
+
 
 
 extension FavoriteViewController : UICollectionViewDataSource, UICollectionViewDelegate {

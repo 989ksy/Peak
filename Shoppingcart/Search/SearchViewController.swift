@@ -19,15 +19,18 @@ class SearchViewController: BaseViewController {
     var tasks: Results<Shopping>!
     let repository = ShoppingRepository()
     
-//페이지네이션 + 검색
-    var page = 1 //start
-    var total = 0
-    var display = 30
-    var isEnd = false
-    var sort = "sim"
-    var searchQuery: String?
     
-    var tableData : Shopping?
+//페이지네이션 + 검색 + 정렬
+    var page = 1 //start, 페이지네이션
+    var total = 0 // 페이지네이션
+    
+    var sort = "sim" //기본값, 페이지네이션 & 정렬
+    var display = 30 // 페이지네이션 & 정렬
+    var isEnd = false //페이지네이션
+    
+    var buttonTapped = false //버튼 토글
+    var start = 1 // 정렬
+    var query = "캠핑" // 정렬
     
     
     override func loadView() {
@@ -63,15 +66,135 @@ class SearchViewController: BaseViewController {
     //페이지네이션
         mainView.collectionView.prefetchDataSource = self
         
-    //서치뷰 collectionView reloadData 처리
-        mainView.requestReloadDataHandler = {
-        self.mainView.collectionView.reloadData()
-        }
-    
+    //정렬 버튼 액션
+        mainView.accuracyButton.addTarget(self, action: #selector(accuracyButtonTapped), for: .touchUpInside)
+        mainView.dateButton.addTarget(self, action: #selector(dateButtonTapped), for: .touchUpInside)
+        mainView.highPriceButton.addTarget(self, action: #selector(highPriceButtonTapped), for: .touchUpInside)
+        mainView.lowPriceButton.addTarget(self, action: #selector(lowPriceButtonTapped), for: .touchUpInside)
+        
         
     }
     
     
+//정렬버튼
+    
+    //정확도로 보기
+    @objc func accuracyButtonTapped() {
+        buttonTapped.toggle()
+        
+        let queryText = mainView.searchbar.text ?? ""
+        let querySort = buttonTapped ? "sim" : "sim"
+        
+        if buttonTapped {
+            mainView.accuracyButton.backgroundColor = .white
+            mainView.accuracyButton.setTitleColor(UIColor.black, for: .normal)
+        } else {
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+        }
+        
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+            self.mainView.collectionView.reloadData()
+            print("==== 정확성 API")
+        } failure: {
+            print("정확성 오류")
+        }
+        
+        print(buttonTapped ? "정확성 눌림" : "정확성 해제")
+        
+    }
+    
+    //날짜순으로보기
+    @objc func dateButtonTapped() {
+        
+        buttonTapped.toggle()
+        
+        let queryText = mainView.searchbar.text ?? ""
+        let querySort = buttonTapped ? "date" : "sim"
+        
+        if buttonTapped {
+            mainView.dateButton.backgroundColor = .white
+            mainView.dateButton.setTitleColor(UIColor.black, for: .normal)
+        } else {
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+        }
+        
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+            self.mainView.collectionView.reloadData()
+            print("==== 날짜순 API")
+        } failure: {
+            print("날짜순 오류")
+        }
+        
+        print(buttonTapped ? "날짜순 눌림" : "날짜순 해제")
+        
+    }
+    
+    //가격높은순으로 보기
+    @objc func highPriceButtonTapped() {
+        
+        buttonTapped.toggle()
+        self.searchList.items.removeAll()
+        
+        let queryText = mainView.searchbar.text ?? ""
+        let querySort = buttonTapped ? "dsc" : "sim"
+            
+        if buttonTapped {
+            mainView.highPriceButton.backgroundColor = .white
+            mainView.highPriceButton.setTitleColor(UIColor.black, for: .normal)
+        } else {
+            mainView.highPriceButton.backgroundColor = .black
+            mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
+        }
+            
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+            self.mainView.collectionView.reloadData()
+            print("==== 가격높은 순 API")
+        } failure: {
+            print("가격 높은 순 오류")
+        }
+            
+        print(buttonTapped ? "비쌈 버튼 눌림" : "비쌈 버튼 해제")
+        
+
+        
+    }
+    
+    //가격낮은순으로 보기
+    @objc func lowPriceButtonTapped() {
+        buttonTapped.toggle()
+        
+        
+        let queryText = mainView.searchbar.text ?? ""
+        let querySort = buttonTapped ? "asc" : "sim"
+        
+        if buttonTapped {
+            mainView.lowPriceButton.backgroundColor = .white
+            mainView.lowPriceButton.setTitleColor(UIColor.black, for: .normal)
+        } else {
+            mainView.lowPriceButton.backgroundColor = .black
+            mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
+        }
+        
+        // API 호출
+        SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
+            self.searchList = data
+            self.mainView.collectionView.reloadData()
+            print("==== 가격높은 순 API")
+        } failure: {
+            print("가격 높은 순 오류")
+        }
+        
+        print(buttonTapped ? "비쌈 버튼 눌림" : "비쌈 버튼 해제")
+        
+    }
     
     
     override func setConstraints() {}
