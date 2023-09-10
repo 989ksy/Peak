@@ -17,7 +17,7 @@ class FavoriteViewController : BaseViewController {
     
     var tasks : Results<Shopping>! //realm 테이블 데이터 (저장됨)
     var codableData : Item? //코더블 객체
-//    var searchList : Search = Search(total: 0, start: 0, display: 0, items: [])
+    var searchList : Search = Search(total: 0, start: 0, display: 0, items: [])
 //
     
     override func loadView() {
@@ -28,6 +28,8 @@ class FavoriteViewController : BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         //추가 하자마자 바로 추가, Realm 불러오기, 내림차순 (제일 최신순)
             tasks = repository.fetch()
+        mainView.collectionView.reloadData()
+        
     }
     
     override func configureView() {
@@ -177,12 +179,8 @@ extension FavoriteViewController : UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let vc = FavProductViewController()
-        let shoppingData = tasks[indexPath.row]
-//        let codableData = codableData[indexPath.row]
-        
+        let shoppingData = tasks[indexPath.row] //쇼핑 realm 데이터
         vc.shoppingData = shoppingData
-//        vc.bowlData = codableData
-        
         
         navigationController?.pushViewController(vc, animated: true)
         

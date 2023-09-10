@@ -24,9 +24,7 @@ class FavProductViewController: BaseViewController, WKUIDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        self.webView.backgroundColor = .black
-        
+
         guard let data = shoppingData else { return }
         
     //제목 + 제목특수문자제거
@@ -57,36 +55,46 @@ class FavProductViewController: BaseViewController, WKUIDelegate {
     @objc func favorietButtonTapped (_ sender: UIBarButtonItem) {
         print("==<좋아요 상세페이지>==좋아요버튼 터치")
         
-    //Realm 데이터 매칭 후 클릭 시 삭제
-        guard let data = bowlData else {return}
+        //        guard let data = bowlData else {return}
+        guard let data = shoppingData else {return}
         print("여기서부터 안 나옴?")
         
         //1. 데이터 저장여부 확인
         let realm = try! Realm()
-        let isSavedData = realm.objects(Shopping.self).where{
-            $0.productId == data.productID
-        }
-        print("== 저장 여부 확인함")
-        
-        //2. 저장되어 있으면 삭제
-        if isSavedData.isEmpty == true {
-            print("그럴리가 없음")
-        } else {
-            let deletingData = realm.objects(Shopping.self).where{
-                $0.productId == data.productID }.first
-            do{
-                try realm.write{
-                    realm.delete(deletingData!)
-                    print("===<좋아요상세페이지> 데이터 삭제 성공")
-                }
-            } catch {
-                print("===<좋아요상세페이지> 데이터 삭제 실패")
+        do {
+            try realm.write {
+                realm.delete(shoppingData!)
+                sender.image = UIImage(systemName: "heart")
             }
+        } catch {
+            
         }
-        
-        print("버튼 액션 끝~")
-        
     }
+//
+//        let isSavedData = realm.objects(Shopping.self).where{
+//            $0.productId == data.productId
+//        }
+//        print("== 저장 여부 확인함")
+//
+//        //2. 저장되어 있으면 삭제
+//        if isSavedData.isEmpty == true {
+//            print("그럴리가 없음")
+//        } else {
+//            let deletingData = realm.objects(Shopping.self).where{
+//                $0.productId == data.productId }.first
+//            do{
+//                try realm.write{
+//                    realm.delete(deletingData!)
+//                    print("===<좋아요상세페이지> 데이터 삭제 성공")
+//                }
+//            } catch {
+//                print("===<좋아요상세페이지> 데이터 삭제 실패")
+//            }
+//        }
+//
+//        print("버튼 액션 끝~")
+//
+//    }
     
     override func configureView() {
         super.configureView()

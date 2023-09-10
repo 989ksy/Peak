@@ -5,7 +5,6 @@
 //  Created by Seungyeon Kim on 2023/09/07.
 
 //<상품 검색> 뷰 : 컬렉션뷰, 검색바, 정렬버튼
-// 쇼핑검색 컬렉션뷰 색상 바꾸는 것 잊지 말자.
 
 import UIKit
 import SnapKit
