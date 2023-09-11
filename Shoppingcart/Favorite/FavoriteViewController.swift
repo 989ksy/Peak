@@ -17,6 +17,7 @@ class FavoriteViewController : BaseViewController {
     
     var tasks : Results<Shopping>! //realm 테이블 데이터 (저장됨)
     var codableData : Item? //코더블 객체
+
     
     override func loadView() {
         let view = mainView
@@ -49,13 +50,16 @@ class FavoriteViewController : BaseViewController {
     
     //실시간 업데이트
         update()
-        
+    
+    //키보드
+        hideKeyboardWhenTappedAround()
+
     }
     
     override func setConstraints() {}
     
 //추가하자마자 목록에 보여줌
-    func update() {
+    @objc func update() {
         repository.fetch()
         mainView.collectionView.reloadData()
     }
@@ -69,7 +73,7 @@ class FavoriteViewController : BaseViewController {
         guard let cell = mainView.collectionView.cellForItem(at: IndexPath(item: indexPath, section: 0)) as? SearchCollectionViewCell else {return}
         print("=== 버튼 눌림2, 인덱스:\(indexPath)")
     
-        var data = tasks[indexPath]
+        let data = tasks[indexPath]
         
         //데이터 저장되었는지 확인하기 (productID 기준)
         let realm = try! Realm()
@@ -118,8 +122,6 @@ extension FavoriteViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
         searchQuery(query: query)
-//        searchBar.resignFirstResponder()
-        hideKeyboardWhenTappedBackground()
 
     }
 
@@ -127,7 +129,6 @@ extension FavoriteViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let text = mainView.searchbar.text else {return}
         searchQuery(query: text)
-        hideKeyboardWhenTappedBackground()
 
     }
 
@@ -138,7 +139,6 @@ extension FavoriteViewController: UISearchBarDelegate {
         tasks = repository.fetch()
         mainView.collectionView.reloadData()
 //        searchBar.resignFirstResponder()
-        hideKeyboardWhenTappedBackground()
 
     }
 
@@ -188,6 +188,8 @@ extension FavoriteViewController : UICollectionViewDataSource, UICollectionViewD
         
         let vc = FavProductViewController()
         let shoppingData = tasks[indexPath.row] //쇼핑 realm 데이터
+//        let codableData = codableData[indexPath.row] //빈값..ㅎ..
+//        vc.codableData = codableData
         vc.shoppingData = shoppingData
         
         navigationController?.pushViewController(vc, animated: true)

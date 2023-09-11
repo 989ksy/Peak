@@ -64,7 +64,7 @@ class ProductViewController: BaseViewController, WKUIDelegate {
             print ("===상세페이지, 데이터 저장 성공")
         } else { //Realm O, 삭제하고 빈하트
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favorietButtonTapped))
-            print ("===상세페이지, 데이터 저장 성공")
+            print ("===상세페이지, 데이터 삭제 성공")
         }
         
         
@@ -108,7 +108,6 @@ class ProductViewController: BaseViewController, WKUIDelegate {
             } catch {
                 print("===상세페이지, 데이터 삭제 X")
             }
-
         }
         
         print("버튼 액션 끝!")

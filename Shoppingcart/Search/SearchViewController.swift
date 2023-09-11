@@ -75,7 +75,7 @@ class SearchViewController: BaseViewController {
         mainView.highPriceButton.addTarget(self, action: #selector(highPriceButtonTapped), for: .touchUpInside)
         mainView.lowPriceButton.addTarget(self, action: #selector(lowPriceButtonTapped), for: .touchUpInside)
         
-        //
+        hideKeyboardWhenTappedAround()
         
     }
     
@@ -398,7 +398,7 @@ extension SearchViewController: UISearchBarDelegate {
         searchList.items.removeAll()
         guard let text = searchBar.text else { return }
         searchQuery(query: text)
-        hideKeyboardWhenTappedBackground()
+        
     }
     
 //취소버튼 클릭시
@@ -406,7 +406,7 @@ extension SearchViewController: UISearchBarDelegate {
         searchBar.text = ""
         searchList.items.removeAll()
         mainView.collectionView.reloadData()
-        hideKeyboardWhenTappedBackground()
+        
 
     }
     
@@ -446,7 +446,6 @@ extension SearchViewController : UICollectionViewDelegate, UICollectionViewDataS
         numberFormatter.numberStyle = .decimal
         let result = numberFormatter.string(from: value! as NSNumber) ?? data.lprice
         cell.priceLabel.text = result
-//        cell.priceLabel.text = data.lprice
         //좋아요버튼
         cell.likeButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         cell.likeButton.tag = indexPath.row
