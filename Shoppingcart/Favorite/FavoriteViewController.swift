@@ -118,13 +118,17 @@ extension FavoriteViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
         searchQuery(query: query)
-        searchBar.resignFirstResponder()
+//        searchBar.resignFirstResponder()
+        hideKeyboardWhenTappedBackground()
+
     }
 
 //실시간 검색기능
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let text = mainView.searchbar.text else {return}
         searchQuery(query: text)
+        hideKeyboardWhenTappedBackground()
+
     }
 
     
@@ -133,7 +137,9 @@ extension FavoriteViewController: UISearchBarDelegate {
         searchBar.text = ""
         tasks = repository.fetch()
         mainView.collectionView.reloadData()
-        searchBar.resignFirstResponder()
+//        searchBar.resignFirstResponder()
+        hideKeyboardWhenTappedBackground()
+
     }
 
     

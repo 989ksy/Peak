@@ -398,6 +398,7 @@ extension SearchViewController: UISearchBarDelegate {
         searchList.items.removeAll()
         guard let text = searchBar.text else { return }
         searchQuery(query: text)
+        hideKeyboardWhenTappedBackground()
     }
     
 //취소버튼 클릭시
@@ -405,7 +406,8 @@ extension SearchViewController: UISearchBarDelegate {
         searchBar.text = ""
         searchList.items.removeAll()
         mainView.collectionView.reloadData()
-        
+        hideKeyboardWhenTappedBackground()
+
     }
     
 }
