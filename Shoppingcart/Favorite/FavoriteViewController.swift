@@ -128,10 +128,10 @@ extension FavoriteViewController: UISearchBarDelegate {
     }
 
     
-//취소버튼 클릭시 (등록된 모든 아이템 보여줌) ** 수정요망
+//취소버튼 클릭시 (등록된 모든 아이템 보여줌) *
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        repository.fetch()
+        tasks = repository.fetch()
         mainView.collectionView.reloadData()
         searchBar.resignFirstResponder()
     }
