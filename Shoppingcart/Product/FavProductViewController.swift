@@ -62,8 +62,11 @@ class FavProductViewController: BaseViewController, WKUIDelegate {
         guard let data = shoppingData else { return }
 
         let realm = try! Realm()
-
-        if let isSavedData = realm.objects(Shopping.self).filter({ $0.productId == data.productId }).first {
+        let isSavedData = realm.objects(Shopping.self).where {
+            $0.productId == data.productId
+        }
+        
+        if isSavedData.isEmpty == false {
             
             do {
                 try realm.write {
@@ -76,9 +79,9 @@ class FavProductViewController: BaseViewController, WKUIDelegate {
             
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(favorietButtonTapped))
             
-//            navigationController?.popViewController(animated: true) //임시
+            navigationController?.popViewController(animated: true) //임시
             
-        } else { //원래 저장해야함. data가..코더블 값이 ..여야하는데 favVC엔 없는게 문제.
+        } else { //원래 저장해야함. data가..코더블 값이 ..여야하는데 favVC엔 없는게 문제..인듯
             print("상세페이지 문제발생")
             
 //            let task = Shopping(productImage: data.productImage, productName: data.productName, storeName: data.storeName, price: data.price, webLink: data.webLink, favorite: true, date: Date(), productId: data.productId)
