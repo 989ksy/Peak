@@ -84,35 +84,54 @@ class SearchViewController: BaseViewController {
     
     //정확도로 보기
     @objc func accuracyButtonTapped() {
-
-        buttonTapped.toggle()
-        if buttonTapped {
-            mainView.accuracyButton.backgroundColor = .white
-            mainView.accuracyButton.setTitleColor(UIColor.black, for: .normal)
-        } else {
-            mainView.accuracyButton.backgroundColor = .black
-            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
-        }
         
-//        mainView.accuracyButton.isSelected = true
-//        mainView.dateButton.isSelected = false
-//        mainView.highPriceButton.isSelected = false
-//        mainView.lowPriceButton.isSelected = false
-//
-//        mainView.accuracyButton.backgroundColor = .white
-//        mainView.accuracyButton.setTitleColor(UIColor.black, for: .normal)
-//
+        buttonTapped.toggle()
         
         let queryText = mainView.searchbar.text ?? ""
         let querySort = buttonTapped ? "sim" : "sim"
         
+        //버튼 조정
+        if buttonTapped { //처음 눌렀을 때
+            mainView.accuracyButton.isSelected = true
+            mainView.dateButton.isSelected = false
+            mainView.highPriceButton.isSelected = false
+            mainView.lowPriceButton.isSelected = false
+
+            mainView.accuracyButton.backgroundColor = .white
+            mainView.accuracyButton.setTitleColor(UIColor.black, for: .normal)
+            
+            mainView.highPriceButton.backgroundColor = .black
+            mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.lowPriceButton.backgroundColor = .black
+            mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
+        } else { // 다시 탭 했을 때
+            mainView.accuracyButton.isSelected = false
+            mainView.dateButton.isSelected = false
+            mainView.highPriceButton.isSelected = false
+            mainView.lowPriceButton.isSelected = false
+
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+            
+            mainView.highPriceButton.backgroundColor = .black
+            mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.lowPriceButton.backgroundColor = .black
+            mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
+        }
+        
         // API 호출
+        
         SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
             self.searchList = data
             self.mainView.collectionView.reloadData()
             print("==== 정확성 API")
         } failure: {
             print("정확성 오류")
+            
         }
         
         print(buttonTapped ? "정확성 눌림" : "정확성 해제")
@@ -123,24 +142,42 @@ class SearchViewController: BaseViewController {
     @objc func dateButtonTapped() {
         
         buttonTapped.toggle()
-        if buttonTapped {
-            mainView.dateButton.backgroundColor = .white
-            mainView.dateButton.setTitleColor(UIColor.black, for: .normal)
-        } else {
-            mainView.dateButton.backgroundColor = .black
-            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
-        }
         
         let queryText = mainView.searchbar.text ?? ""
         let querySort = buttonTapped ? "date" : "sim"
         
-//        mainView.dateButton.isSelected = true
-//        mainView.accuracyButton.isSelected = false
-//        mainView.highPriceButton.isSelected = false
-//        mainView.lowPriceButton.isSelected = false
-//
-//        mainView.dateButton.backgroundColor = .white
-//        mainView.dateButton.setTitleColor(UIColor.black, for: .normal)
+        //버튼 조정
+        if buttonTapped {
+            mainView.dateButton.isSelected = true
+            mainView.accuracyButton.isSelected = false
+            mainView.highPriceButton.isSelected = false
+            mainView.lowPriceButton.isSelected = false
+
+            mainView.dateButton.backgroundColor = .white
+            mainView.dateButton.setTitleColor(UIColor.black, for: .normal)
+            
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.highPriceButton.backgroundColor = .black
+            mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.lowPriceButton.backgroundColor = .black
+            mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
+        } else {
+            mainView.dateButton.isSelected = false
+            mainView.accuracyButton.isSelected = false
+            mainView.highPriceButton.isSelected = false
+            mainView.lowPriceButton.isSelected = false
+
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+            
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.highPriceButton.backgroundColor = .black
+            mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.lowPriceButton.backgroundColor = .black
+            mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
+        }
         
         // API 호출
         SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in
@@ -155,21 +192,46 @@ class SearchViewController: BaseViewController {
         
     }
     
+    
     //가격높은순으로 보기
     @objc func highPriceButtonTapped() {
         
         buttonTapped.toggle()
-//        self.searchList.items.removeAll()
         
         let queryText = mainView.searchbar.text ?? ""
         let querySort = buttonTapped ? "dsc" : "sim"
-            
+        
+        //버튼 조정
         if buttonTapped {
+            mainView.highPriceButton.isSelected = true
+            mainView.accuracyButton.isSelected = false
+            mainView.dateButton.isSelected = false
+            mainView.lowPriceButton.isSelected = false
+
             mainView.highPriceButton.backgroundColor = .white
             mainView.highPriceButton.setTitleColor(UIColor.black, for: .normal)
+            
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.lowPriceButton.backgroundColor = .black
+            mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
         } else {
+            mainView.highPriceButton.isSelected = false
+            mainView.accuracyButton.isSelected = false
+            mainView.dateButton.isSelected = false
+            mainView.lowPriceButton.isSelected = false
+
             mainView.highPriceButton.backgroundColor = .black
             mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
+            
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.lowPriceButton.backgroundColor = .black
+            mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
         }
             
         // API 호출
@@ -180,7 +242,7 @@ class SearchViewController: BaseViewController {
         } failure: {
             print("가격 높은 순 오류")
         }
-            
+        
         print(buttonTapped ? "비쌈 버튼 눌림" : "비쌈 버튼 해제")
         
 
@@ -189,18 +251,45 @@ class SearchViewController: BaseViewController {
     
     //가격낮은순으로 보기
     @objc func lowPriceButtonTapped() {
+        
         buttonTapped.toggle()
         
         let queryText = mainView.searchbar.text ?? ""
         let querySort = buttonTapped ? "asc" : "sim"
         
+        //버튼 조정
         if buttonTapped {
+            mainView.lowPriceButton.isSelected = true
+            mainView.accuracyButton.isSelected = false
+            mainView.dateButton.isSelected = false
+            mainView.highPriceButton.isSelected = false
+
             mainView.lowPriceButton.backgroundColor = .white
             mainView.lowPriceButton.setTitleColor(UIColor.black, for: .normal)
+            
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.highPriceButton.backgroundColor = .black
+            mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
         } else {
+            mainView.lowPriceButton.isSelected = true
+            mainView.accuracyButton.isSelected = false
+            mainView.dateButton.isSelected = false
+            mainView.highPriceButton.isSelected = false
+
             mainView.lowPriceButton.backgroundColor = .black
             mainView.lowPriceButton.setTitleColor(UIColor.white, for: .normal)
+            
+            mainView.accuracyButton.backgroundColor = .black
+            mainView.accuracyButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.dateButton.backgroundColor = .black
+            mainView.dateButton.setTitleColor(UIColor.white, for: .normal)
+            mainView.highPriceButton.backgroundColor = .black
+            mainView.highPriceButton.setTitleColor(UIColor.white, for: .normal)
         }
+        
         
         // API 호출
         SearchAPIManager.shared.callRequest(query: queryText, sort: querySort, page: start, display: display) { data in

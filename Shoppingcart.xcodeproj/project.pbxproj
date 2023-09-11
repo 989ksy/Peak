@@ -35,6 +35,7 @@
 		0FE572322AAC3BAA007A1A9B /* ProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE572312AAC3BAA007A1A9B /* ProductViewController.swift */; };
 		0FE572342AAC70FD007A1A9B /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE572332AAC70FD007A1A9B /* File.swift */; };
 		0FE572362AAD5A55007A1A9B /* FavProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE572352AAD5A55007A1A9B /* FavProductViewController.swift */; };
+		0FE572712AAEE7DC007A1A9B /* SearchViewUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE572702AAEE7DC007A1A9B /* SearchViewUIButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		0FE572312AAC3BAA007A1A9B /* ProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewController.swift; sourceTree = "<group>"; };
 		0FE572332AAC70FD007A1A9B /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		0FE572352AAD5A55007A1A9B /* FavProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavProductViewController.swift; sourceTree = "<group>"; };
+		0FE572702AAEE7DC007A1A9B /* SearchViewUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewUIButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 				0FE571F82AA9C4B1007A1A9B /* SearchViewController.swift */,
 				0FE5720C2AA9DEE2007A1A9B /* SearchView.swift */,
 				0FE572172AAA0D7A007A1A9B /* SearchCollectionViewCell.swift */,
+				0FE572702AAEE7DC007A1A9B /* SearchViewUIButton.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				0FE571F92AA9C4B1007A1A9B /* SearchViewController.swift in Sources */,
 				0FE572142AA9DFD0007A1A9B /* APIKey.swift in Sources */,
 				0FE571ED2AA9C09A007A1A9B /* Search.swift in Sources */,
+				0FE572712AAEE7DC007A1A9B /* SearchViewUIButton.swift in Sources */,
 				0FE572272AAAE405007A1A9B /* ShoppingRealmModel.swift in Sources */,
 				0FE571F52AA9C452007A1A9B /* BaseView.swift in Sources */,
 				0FE571D72AA9BF66007A1A9B /* AppDelegate.swift in Sources */,

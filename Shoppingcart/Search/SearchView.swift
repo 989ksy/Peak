@@ -53,46 +53,26 @@ class SearchView: BaseView {
     
     //버튼 1~4
     let accuracyButton = { //정확도
-        let view = UIButton()
+        let view = SearchViewUIButton()
         view.setTitle("정확도", for: .normal)
-        view.titleLabel?.font = .systemFont(ofSize: 14)
-        view.setTitleColor(UIColor.white, for: .normal)
-        view.layer.cornerRadius = 6
-        view.layer.borderColor = UIColor.white.cgColor
-        view.layer.borderWidth = 1
         return view
     }()
     
     let dateButton = { //날짜순
-        let view = UIButton()
+        let view = SearchViewUIButton()
         view.setTitle("날짜순", for: .normal)
-        view.titleLabel?.font = .systemFont(ofSize: 14)
-        view.setTitleColor(UIColor.white, for: .normal)
-        view.layer.cornerRadius = 6
-        view.layer.borderColor = UIColor.white.cgColor
-        view.layer.borderWidth = 1
         return view
     }()
     
     let highPriceButton = { //가격높은순
-        let view = UIButton()
+        let view = SearchViewUIButton()
         view.setTitle("가격높은순", for: .normal)
-        view.titleLabel?.font = .systemFont(ofSize: 14)
-        view.setTitleColor(UIColor.white, for: .normal)
-        view.layer.cornerRadius = 6
-        view.layer.borderColor = UIColor.white.cgColor
-        view.layer.borderWidth = 1
         return view
     }()
     
     let lowPriceButton = { //가격낮은순
-        let view = UIButton()
+        let view = SearchViewUIButton()
         view.setTitle("가격낮은순", for: .normal)
-        view.titleLabel?.font = .systemFont(ofSize: 14)
-        view.setTitleColor(UIColor.white, for: .normal)
-        view.layer.cornerRadius = 6
-        view.layer.borderColor = UIColor.white.cgColor
-        view.layer.borderWidth = 1
         return view
     }()
     

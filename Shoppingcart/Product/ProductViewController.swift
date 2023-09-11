@@ -41,16 +41,17 @@ class ProductViewController: BaseViewController, WKUIDelegate {
         
     //기본세팅값
         let myURL = URL(string: "https://msearch.shopping.naver.com/product/\(data.productID)")
-        
-        
-    //네비게이션바 세팅
         print("===== 제품 아이디: \(data.productID)")
         let myRequest = URLRequest(url: myURL!)
         webView.load(myRequest)
         
+    //네비게이션바 세팅
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barTintColor = .black
     
+        tabBarController?.tabBar.barTintColor = .black //탭바
+        
     //네비게이션 버튼 기본세팅_ 저장 안 되어있으면 빈 하트, 되어 있으면 색칠 된 하트
         let realm = try! Realm()
         let isSavedData = realm.objects(Shopping.self).where {
@@ -108,10 +109,6 @@ class ProductViewController: BaseViewController, WKUIDelegate {
             }
 
         }
-        
-        
-        
-        
         
         print("버튼 액션 끝!")
         

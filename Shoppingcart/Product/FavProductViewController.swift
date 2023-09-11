@@ -44,6 +44,10 @@ class FavProductViewController: BaseViewController, WKUIDelegate {
     //네비게이션바 세팅
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barTintColor = .black
+        
+        tabBarController?.tabBar.barTintColor = .black //탭바
+
 
         
     //네비게이션바 좋아요 버튼
