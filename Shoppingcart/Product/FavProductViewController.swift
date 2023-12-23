@@ -87,7 +87,7 @@ class FavProductViewController: BaseViewController, WKUIDelegate {
 //            let task = Shopping(productImage: data.productImage, productName: data.productName, storeName: data.storeName, price: data.price, webLink: data.webLink, favorite: true, date: Date(), productId: data.productId)
 //                repository.createItem(task)
 //
-//            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(favorietButtonTapped))
+//            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .plain, target: self, action: #selector(favorietButtonTapped))
 //            print ("===상세페이지, 데이터 저장 성공")
             
         }

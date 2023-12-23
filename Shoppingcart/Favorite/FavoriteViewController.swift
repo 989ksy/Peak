@@ -26,7 +26,7 @@ class FavoriteViewController : BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         //추가 하자마자 바로 추가, Realm 불러오기, 내림차순 (제일 최신순)
-            tasks = repository.fetch()
+        tasks = repository.fetch()
         mainView.collectionView.reloadData()
         
     }
