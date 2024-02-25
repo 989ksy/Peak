@@ -1,6 +1,7 @@
 # Peak ⛰️
 
-<img width="100" height="100" src="https://github.com/989ksy/Peak/assets/122261047/332f97cf-8786-498b-8905-37bed77f58e4">
+<img width="100" height="100" src="https://github.com/989ksy/Peak/assets/122261047/2a29252b-6351-4b0e-889a-58908e8c2626">
+
 </br>
 </br>
 
@@ -8,7 +9,9 @@
 
 
 ## Preview
-![peak](https://github.com/989ksy/Peak/assets/122261047/0f5e4edd-d690-4bd1-a21e-1cc7a22fd470)
+
+![peak](https://github.com/989ksy/Peak/assets/122261047/0bd09506-019e-4ada-b7e2-72b060de54dd)
+
 
 </br>
 
@@ -112,3 +115,4 @@ if let imageURL = URL(string: dataImage) {
 * URL Session 기반 라이브러리인 **Alamofire**를 사용해 네이버 쇼핑 API를 이용한 쇼핑 위시리스트 앱을 만들었습니다. 재사용 셀에 이미지 로딩이 지연 되는 문제를 Kingfisher에서 제공해주는 캐싱 기능으로 해결하며, 해당 라이브러리의 장점을 활용하여 메모리 사용을 최적화하여 관리할 수 있었습니다.
 * 데이터베이스 Realm을 사용할 때 **Repository Pattern**을 도입하여 코드 중복을 최소화하고 유지 보수에 용이한 로직을 구현했습니다.
 * 이번 프로젝트 진행을 하면서 아쉬웠던 점은 사용자의 네트워크 사용과 관련해서 발생할 수 있는 여러 상황에 대한 대응이 미흡했던 점입니다. 이후 진행되는 프로젝트에서는 비행기 모드나 네트워크 연결 불안정과 같은 상황에 유연하게 대응할 수 있는 로직을 네트워크 유무를 감지하는 NWPathMonitor를 학습한 뒤 해당 기능을 통해 구현해 볼 예정입니다.
+  
