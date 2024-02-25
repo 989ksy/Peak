@@ -19,7 +19,7 @@
 
 **개발기간:** 2023년 9월 7일 ~ 2023년 9월 11일
 
-**iOS 최소 지원 버전:** 16.0 
+**iOS 최소 지원 버전:** 13.0 
 
 **Package Dependency Manager:** Swift Package Manager
 
